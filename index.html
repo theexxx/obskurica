@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Фонарик сайт</title>
+    <link href="https://fonts.googleapis.com/css2?family=Jura:wght@300;400;500;600;700&family=Exo+2:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(to bottom, #000000, #001100);
+            font-family: 'Exo 2', sans-serif;
+            overflow: hidden;
+            position: relative;
+            /* Курсор видим */
+        }
+
+        /* Анимированный волновой фон */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, #000000, #001100);
+            z-index: -3;
+        }
+
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 80, 0, 0.1), transparent);
+            animation: waveAnimation 8s ease-in-out infinite;
+            opacity: 0.6;
+        }
+
+        .wave:nth-child(2) {
+            animation-delay: -2s;
+            opacity: 0.4;
+        }
+
+        .wave:nth-child(3) {
+            animation-delay: -4s;
+            opacity: 0.2;
+        }
+
+        @keyframes waveAnimation {
+            0% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(-25%);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* Эффект фонарика */
+        .flashlight {
+            position: fixed;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: radial-gradient(
+                circle,
+                rgba(255, 255, 255, 0.2) 0%,
+                rgba(255, 255, 255, 0.1) 20%,
+                transparent 60%
+            );
+            pointer-events: none;
+            z-index: -1;
+            transform: translate(-50%, -50%);
+            transition: transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            filter: brightness(1);
+            will-change: transform;
+        }
+
+        /* Эффект замыкания */
+        .flashlight.flicker {
+            animation: flicker 0.3s ease-in-out;
+        }
+
+        @keyframes flicker {
+            0% {
+                filter: brightness(1);
+                opacity: 1;
+            }
+            25% {
+                filter: brightness(0.3);
+                opacity: 0.7;
+            }
+            50% {
+                filter: brightness(1.5);
+                opacity: 1;
+            }
+            75% {
+                filter: brightness(0.6);
+                opacity: 0.8;
+            }
+            100% {
+                filter: brightness(1);
+                opacity: 1;
+            }
+        }
+
+        /* Контейнер для формы */
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 500px;
+            z-index: 1;
+        }
+
+        /* Форма ввода */
+        .search-form {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        /* Поле ввода в одну строку */
+        .search-input {
+            flex: 1;
+            height: 55px;
+            padding: 0 25px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            color: #00ff00;
+            font-size: 18px;
+            font-family: 'Jura', sans-serif;
+            font-weight: 400;
+            backdrop-filter: blur(15px);
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            min-width: 0; /* Исправление для flexbox */
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: rgba(0, 255, 0, 0.6);
+            background: rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 25px rgba(0, 255, 0, 0.3);
+        }
+
+        .search-input::placeholder {
+            color: rgba(0, 255, 0, 0.4);
+            font-family: 'Exo 2', sans-serif;
+            letter-spacing: normal;
+        }
+
+        /* Стили для правильного ввода */
+        .search-input.correct {
+            border-color: #00ff00;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.6);
+            background: rgba(0, 50, 0, 0.4);
+        }
+
+        /* Стили для неправильного ввода */
+        .search-input.wrong {
+            border-color: #ff3333;
+            box-shadow: 0 0 20px rgba(255, 51, 51, 0.6);
+            background: rgba(50, 0, 0, 0.4);
+        }
+
+        /* Кнопка подтверждения - исправленный хитбокс */
+        .submit-btn {
+            height: 55px;
+            padding: 0 30px;
+            background: linear-gradient(135deg, rgba(0, 80, 0, 0.6), rgba(0, 40, 0, 0.8));
+            border: 2px solid rgba(0, 255, 0, 0.3);
+            border-radius: 30px;
+            color: #00ff00;
+            font-size: 16px;
+            font-family: 'Jura', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            backdrop-filter: blur(15px);
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            flex-shrink: 0; /* Предотвращает сжатие кнопки */
+            position: relative;
+            /* Исправление хитбокса */
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, rgba(0, 100, 0, 0.7), rgba(0, 60, 0, 0.9));
+            border-color: rgba(0, 255, 0, 0.6);
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Сообщение об успехе */
+        .success-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: clamp(32px, 6vw, 52px); /* Адаптивный размер шрифта */
+            font-family: 'Jura', sans-serif;
+            font-weight: 700;
+            color: #00ff00;
+            text-align: center;
+            text-shadow: 0 0 30px rgba(0, 255, 0, 0.9);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            letter-spacing: 3px;
+            pointer-events: none;
+            padding: 20px;
+        }
+
+        .success-message.show {
+            opacity: 1;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                text-shadow: 0 0 30px rgba(0, 255, 0, 0.9);
+                transform: translate(-50%, -50%) scale(1);
+            }
+            50% {
+                text-shadow: 0 0 50px rgba(0, 255, 0, 1);
+                transform: translate(-50%, -50%) scale(1.05);
+            }
+        }
+
+        /* Эффект размытия при успехе */
+        .blur-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(25px);
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        .blur-overlay.show {
+            opacity: 1;
+        }
+
+        /* Заголовок */
+        .title {
+            text-align: center;
+            color: #00ff00;
+            margin-bottom: 35px;
+            font-size: clamp(20px, 4vw, 28px); /* Адаптивный размер шрифта */
+            font-family: 'Jura', sans-serif;
+            font-weight: 500;
+            text-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
+            letter-spacing: 2px;
+            line-height: 1.3;
+        }
+
+        /* Дополнительный техно-эффект */
+        .glow {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00ff00, transparent);
+            bottom: -10px;
+            left: 0;
+            opacity: 0.5;
+            animation: glowMove 3s ease-in-out infinite;
+        }
+
+        @keyframes glowMove {
+            0%, 100% {
+                transform: translateX(-100%);
+            }
+            50% {
+                transform: translateX(100%);
+            }
+        }
+
+        /* Медиа-запросы для мобильных устройств */
+        @media (max-width: 768px) {
+            .search-form {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .search-input {
+                width: 100%;
+                height: 50px;
+                font-size: 16px;
+            }
+            
+            .submit-btn {
+                width: 100%;
+                height: 50px;
+                font-size: 15px;
+            }
+            
+            .container {
+                width: 95%;
+                padding: 0 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .search-input {
+                height: 45px;
+                padding: 0 20px;
+                font-size: 15px;
+            }
+            
+            .submit-btn {
+                height: 45px;
+                font-size: 14px;
+                padding: 0 25px;
+            }
+            
+            .title {
+                margin-bottom: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+    </div>
+    <div class="flashlight" id="flashlight"></div>
+    <div class="blur-overlay" id="blurOverlay"></div>
+    
+    <div class="container">
+        <h1 class="title">
+            Введите текст???
+            <div class="glow"></div>
+        </h1>
+        <form class="search-form" id="searchForm">
+            <input 
+                type="text" 
+                class="search-input" 
+                id="searchInput"
+                placeholder="Введите текст здесь..."
+                autocomplete="off"
+            >
+            <button type="submit" class="submit-btn">Проверить</button>
+        </form>
+    </div>
+
+    <div class="success-message" id="successMessage">Вы отгадали!</div>
+
+    <script>
+        class FlashlightApp {
+            constructor() {
+                this.flashlight = document.getElementById('flashlight');
+                this.searchForm = document.getElementById('searchForm');
+                this.searchInput = document.getElementById('searchInput');
+                this.successMessage = document.getElementById('successMessage');
+                this.blurOverlay = document.getElementById('blurOverlay');
+                
+                this.mouseX = 0;
+                this.mouseY = 0;
+                this.flashlightX = 0;
+                this.flashlightY = 0;
+                this.animationId = null;
+                this.flickerInterval = null;
+                
+                this.init();
+            }
+            
+            init() {
+                this.setupEventListeners();
+                this.startAnimation();
+                this.startFlicker();
+            }
+            
+            setupEventListeners() {
+                // Движение мыши
+                document.addEventListener('mousemove', (e) => {
+                    this.mouseX = e.clientX;
+                    this.mouseY = e.clientY;
+                });
+                
+                // Касания на мобильных устройствах
+                document.addEventListener('touchmove', (e) => {
+                    e.preventDefault();
+                    const touch = e.touches[0];
+                    this.mouseX = touch.clientX;
+                    this.mouseY = touch.clientY;
+                }, { passive: false });
+                
+                // Форма
+                this.searchForm.addEventListener('submit', (e) => this.handleSubmit(e));
+                this.searchInput.addEventListener('input', () => this.handleInput());
+                
+                // Размер фонарика при наведении
+                this.searchForm.addEventListener('mouseenter', () => this.resizeFlashlight(160));
+                this.searchForm.addEventListener('mouseleave', () => this.resizeFlashlight(120));
+            }
+            
+            startAnimation() {
+                const animate = () => {
+                    const dx = this.mouseX - this.flashlightX;
+                    const dy = this.mouseY - this.flashlightY;
+                    
+                    this.flashlightX += dx * 0.1;
+                    this.flashlightY += dy * 0.1;
+                    
+                    this.flashlight.style.left = this.flashlightX + 'px';
+                    this.flashlight.style.top = this.flashlightY + 'px';
+                    
+                    this.animationId = requestAnimationFrame(animate);
+                };
+                animate();
+            }
+            
+            startFlicker() {
+                this.flickerInterval = setInterval(() => {
+                    if (Math.random() < 0.3) {
+                        this.triggerFlicker();
+                    }
+                }, 3000);
+            }
+            
+            resizeFlashlight(size) {
+                this.flashlight.style.width = size + 'px';
+                this.flashlight.style.height = size + 'px';
+            }
+            
+            triggerFlicker() {
+                this.flashlight.classList.add('flicker');
+                setTimeout(() => {
+                    this.flashlight.classList.remove('flicker');
+                }, 300);
+            }
+            
+            handleSubmit(e) {
+                e.preventDefault();
+                
+                const inputValue = this.searchInput.value.trim();
+                this.searchInput.classList.remove('correct', 'wrong');
+                
+                if (inputValue.toLowerCase() === 'primer') {
+                    this.searchInput.classList.add('correct');
+                    setTimeout(() => {
+                        this.blurOverlay.classList.add('show');
+                        this.successMessage.classList.add('show');
+                    }, 500);
+                } else {
+                    this.searchInput.classList.add('wrong');
+                    this.triggerFlicker();
+                    setTimeout(() => {
+                        this.searchInput.classList.remove('wrong');
+                        this.searchInput.value = '';
+                    }, 1500);
+                }
+            }
+            
+            handleInput() {
+                this.searchInput.classList.remove('correct', 'wrong');
+                this.blurOverlay.classList.remove('show');
+                this.successMessage.classList.remove('show');
+            }
+            
+            // Очистка при уничтожении
+            destroy() {
+                if (this.animationId) {
+                    cancelAnimationFrame(this.animationId);
+                }
+                if (this.flickerInterval) {
+                    clearInterval(this.flickerInterval);
+                }
+            }
+        }
+        
+        // Инициализация при загрузке
+        document.addEventListener('DOMContentLoaded', () => {
+            new FlashlightApp();
+        });
+        
+        // Предотвращение масштабирования на мобильных устройствах
+        document.addEventListener('touchstart', (e) => {
+            if (e.touches.length > 1) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+        
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', (e) => {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                e.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+    </script>
+</body>
+</html>
