@@ -51,7 +51,30 @@
             animation: bloodPulse 30s ease-in-out infinite;
         }
 
-        /* Эффект пульсации крови */
+        .blood-background.green-transformation {
+            background: 
+                radial-gradient(circle at 50% 50%, 
+                    rgba(0, 120, 0, 0.4) 0%,
+                    rgba(0, 80, 0, 0.6) 30%,
+                    rgba(0, 40, 0, 0.8) 60%,
+                    rgba(0, 20, 0, 0.9) 100%
+                ),
+                radial-gradient(circle at 20% 20%, 
+                    rgba(0, 139, 0, 0.3) 0%,
+                    transparent 50%
+                ),
+                radial-gradient(circle at 80% 80%, 
+                    rgba(0, 100, 0, 0.3) 0%,
+                    transparent 50%
+                ),
+                radial-gradient(circle at 30% 70%, 
+                    rgba(0, 120, 0, 0.2) 0%,
+                    transparent 40%
+                );
+            animation: greenPulse 30s ease-in-out infinite;
+        }
+
+        /* Эффект пульсации */
         @keyframes bloodPulse {
             0%, 100% {
                 opacity: 0.8;
@@ -75,7 +98,30 @@
             }
         }
 
-        /* Дополнительные кровавые волны */
+        @keyframes greenPulse {
+            0%, 100% {
+                opacity: 0.8;
+                transform: scale(1);
+                filter: hue-rotate(120deg) brightness(1);
+            }
+            25% {
+                opacity: 0.85;
+                transform: scale(1.005);
+                filter: hue-rotate(122deg) brightness(1.02);
+            }
+            50% {
+                opacity: 0.9;
+                transform: scale(1.01);
+                filter: hue-rotate(119deg) brightness(1.01);
+            }
+            75% {
+                opacity: 0.85;
+                transform: scale(1.005);
+                filter: hue-rotate(121deg) brightness(1.02);
+            }
+        }
+
+        /* Дополнительные волны */
         .blood-waves {
             position: fixed;
             top: 0;
@@ -96,6 +142,18 @@
             opacity: 0.7;
         }
 
+        .blood-waves.green-transformation {
+            background: 
+                radial-gradient(ellipse at 10% 90%, 
+                    rgba(0, 160, 0, 0.15) 0%,
+                    transparent 40%
+                ),
+                radial-gradient(ellipse at 90% 10%, 
+                    rgba(0, 140, 0, 0.1) 0%,
+                    transparent 40%
+                );
+        }
+
         @keyframes wavesMove {
             0%, 100% {
                 transform: translateX(0px) translateY(0px) rotate(0deg);
@@ -108,7 +166,7 @@
             }
         }
 
-        /* Секретная надпись - полностью невидима по умолчанию */
+        /* Секретная надпись */
         .secret-text {
             position: fixed;
             bottom: 20px;
@@ -116,7 +174,7 @@
             color: transparent;
             font-size: 14px;
             font-family: 'MedievalSharp', cursive;
-            transition: all 0.5s ease;
+            transition: all 0.3s ease;
             z-index: 1;
             pointer-events: none;
             text-shadow: none;
@@ -130,6 +188,13 @@
                 0 0 10px rgba(255, 0, 0, 0.8),
                 0 0 30px rgba(255, 0, 0, 0.6),
                 0 0 50px rgba(255, 0, 0, 0.4);
+        }
+
+        .secret-text.green-transformation.visible {
+            text-shadow: 
+                0 0 10px rgba(0, 255, 0, 0.8),
+                0 0 30px rgba(0, 255, 0, 0.6),
+                0 0 50px rgba(0, 255, 0, 0.4);
         }
 
         /* Контейнер для частиц */
@@ -151,6 +216,24 @@
             transform: translateY(100vh);
         }
 
+        .particle.green-transformation {
+            background: radial-gradient(circle, rgba(0, 200, 0, 0.15), rgba(0, 139, 0, 0.05));
+        }
+
+        .particle.erythrocyte {
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle, rgba(200, 0, 0, 0.2), transparent);
+            border: 1px solid rgba(180, 0, 0, 0.3);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+        }
+
+        .particle.erythrocyte.green-transformation {
+            background: radial-gradient(circle, rgba(0, 200, 0, 0.2), transparent);
+            border: 1px solid rgba(0, 180, 0, 0.3);
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+        }
+
         .particle.small {
             width: 15px;
             height: 15px;
@@ -164,14 +247,6 @@
         .particle.large {
             width: 50px;
             height: 50px;
-        }
-
-        .particle.erythrocyte {
-            width: 40px;
-            height: 40px;
-            background: radial-gradient(circle, rgba(200, 0, 0, 0.2), transparent);
-            border: 1px solid rgba(180, 0, 0, 0.3);
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
         }
 
         @keyframes float {
@@ -202,6 +277,11 @@
             opacity: 0;
             animation: symbolAppear 3s ease-in-out forwards;
             text-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+        }
+
+        .floating-symbol.green-transformation {
+            color: rgba(50, 255, 50, 0.7);
+            text-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
         }
 
         @keyframes symbolAppear {
@@ -253,6 +333,18 @@
                 0 0 100px rgba(139, 0, 0, 0.3);
         }
 
+        .flashlight.green-transformation {
+            background: radial-gradient(
+                circle,
+                rgba(50, 255, 50, 0.4) 0%,
+                rgba(0, 200, 0, 0.2) 20%,
+                transparent 60%
+            );
+            box-shadow: 
+                0 0 50px rgba(0, 255, 0, 0.5),
+                0 0 100px rgba(0, 139, 0, 0.3);
+        }
+
         .flashlight.flicker {
             animation: flicker 0.3s ease-in-out;
         }
@@ -285,6 +377,12 @@
             width: 90%;
             max-width: 500px;
             z-index: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        .container.hidden {
+            opacity: 0;
+            pointer-events: none;
         }
 
         /* Форма ввода */
@@ -399,40 +497,7 @@
             transform: translateY(-1px);
         }
 
-        /* Кнопка BACK */
-        .back-btn {
-            position: fixed;
-            top: 60%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 12px 30px;
-            background: linear-gradient(135deg, rgba(160, 0, 0, 0.6), rgba(120, 0, 0, 0.8));
-            border: 2px solid rgba(255, 50, 50, 0.5);
-            border-radius: 8px;
-            color: #ff4444;
-            font-size: 16px;
-            font-family: 'MedievalSharp', cursive;
-            cursor: pointer;
-            backdrop-filter: blur(8px);
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
-            opacity: 0;
-            pointer-events: none;
-            z-index: 1001;
-        }
-
-        .back-btn.show {
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        .back-btn:hover {
-            background: linear-gradient(135deg, rgba(180, 0, 0, 0.7), rgba(140, 0, 0, 0.8));
-            border-color: rgba(255, 80, 80, 0.7);
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
-        }
-
+        /* Сообщения для первого пароля */
         .success-message {
             position: fixed;
             top: 40%;
@@ -448,7 +513,7 @@
                 0 0 50px rgba(139, 0, 0, 0.4);
             z-index: 1000;
             opacity: 0;
-            transition: opacity 1s ease;
+            transition: opacity 0.5s ease;
             letter-spacing: 2px;
             pointer-events: none;
             padding: 20px;
@@ -457,22 +522,6 @@
         .success-message.show {
             opacity: 1;
             animation: bloodPulseMessage 4s ease-in-out infinite;
-        }
-
-        @keyframes bloodPulseMessage {
-            0%, 100% {
-                transform: translate(-50%, -50%) scale(1);
-                text-shadow: 
-                    0 0 15px rgba(255, 0, 0, 0.8),
-                    0 0 30px rgba(200, 0, 0, 0.6);
-            }
-            50% {
-                transform: translate(-50%, -50%) scale(1.05);
-                text-shadow: 
-                    0 0 25px rgba(255, 0, 0, 0.9),
-                    0 0 45px rgba(200, 0, 0, 0.7),
-                    0 0 65px rgba(139, 0, 0, 0.5);
-            }
         }
 
         .username {
@@ -496,6 +545,86 @@
             animation: usernameFlicker 4s infinite;
         }
 
+        /* Сообщения для второго пароля */
+        .completed-message {
+            position: fixed;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: clamp(28px, 6vw, 48px);
+            font-family: 'MedievalSharp', cursive;
+            color: #00ff00;
+            text-align: center;
+            text-shadow: 
+                0 0 15px rgba(0, 255, 0, 0.8),
+                0 0 30px rgba(0, 200, 0, 0.6),
+                0 0 50px rgba(0, 139, 0, 0.4);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            letter-spacing: 2px;
+            pointer-events: none;
+            padding: 20px;
+        }
+
+        .completed-message.show {
+            opacity: 1;
+            animation: completedPulse 4s ease-in-out infinite;
+        }
+
+        .username-second {
+            position: fixed;
+            top: 52%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: clamp(16px, 3vw, 20px);
+            font-family: 'MedievalSharp', cursive;
+            color: #00ff00;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+
+        .username-second.show {
+            opacity: 1;
+            animation: usernameSecondFlicker 4s infinite;
+        }
+
+        @keyframes bloodPulseMessage {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(1);
+                text-shadow: 
+                    0 0 15px rgba(255, 0, 0, 0.8),
+                    0 0 30px rgba(200, 0, 0, 0.6);
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.05);
+                text-shadow: 
+                    0 0 25px rgba(255, 0, 0, 0.9),
+                    0 0 45px rgba(200, 0, 0, 0.7),
+                    0 0 65px rgba(139, 0, 0, 0.5);
+            }
+        }
+
+        @keyframes completedPulse {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(1);
+                text-shadow: 
+                    0 0 15px rgba(0, 255, 0, 0.8),
+                    0 0 30px rgba(0, 200, 0, 0.6);
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.05);
+                text-shadow: 
+                    0 0 25px rgba(0, 255, 0, 0.9),
+                    0 0 45px rgba(0, 200, 0, 0.7),
+                    0 0 65px rgba(0, 139, 0, 0.5);
+            }
+        }
+
         @keyframes usernameFlicker {
             0%, 100% {
                 opacity: 1;
@@ -509,6 +638,68 @@
                 opacity: 0.8;
                 text-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
             }
+        }
+
+        @keyframes usernameSecondFlicker {
+            0%, 100% {
+                opacity: 1;
+                text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+            }
+            2%, 6%, 10% {
+                opacity: 0.4;
+                text-shadow: 0 0 5px rgba(0, 255, 0, 0.2);
+            }
+            4%, 8% {
+                opacity: 0.8;
+                text-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
+            }
+        }
+
+        /* Кнопка BACK */
+        .back-btn {
+            position: fixed;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 12px 30px;
+            background: linear-gradient(135deg, rgba(160, 0, 0, 0.6), rgba(120, 0, 0, 0.8));
+            border: 2px solid rgba(255, 50, 50, 0.5);
+            border-radius: 8px;
+            color: #ff4444;
+            font-size: 16px;
+            font-family: 'MedievalSharp', cursive;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 1001;
+        }
+
+        .back-btn.green-transformation {
+            background: linear-gradient(135deg, rgba(0, 160, 0, 0.6), rgba(0, 120, 0, 0.8));
+            border: 2px solid rgba(0, 255, 0, 0.5);
+            color: #00ff00;
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+        }
+
+        .back-btn.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .back-btn:hover {
+            background: linear-gradient(135deg, rgba(180, 0, 0, 0.7), rgba(140, 0, 0, 0.8));
+            border-color: rgba(255, 80, 80, 0.7);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+        }
+
+        .back-btn.green-transformation:hover {
+            background: linear-gradient(135deg, rgba(0, 180, 0, 0.7), rgba(0, 140, 0, 0.8));
+            border-color: rgba(0, 255, 0, 0.7);
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
         }
 
         .blur-overlay {
@@ -543,6 +734,14 @@
             line-height: 1.3;
         }
 
+        .title.green-transformation {
+            color: #00ff00;
+            text-shadow: 
+                0 0 10px rgba(0, 255, 0, 0.8),
+                0 0 20px rgba(0, 200, 0, 0.6),
+                0 0 30px rgba(0, 139, 0, 0.4);
+        }
+
         .blood-drips {
             position: fixed;
             top: 0;
@@ -554,12 +753,20 @@
             opacity: 0.3;
         }
 
+        .blood-drips.green-transformation {
+            opacity: 0.2;
+        }
+
         .drip {
             position: absolute;
             width: 2px;
             background: linear-gradient(to bottom, transparent, #ff4444, transparent);
             animation: dripFall 6s linear infinite;
             top: -100px;
+        }
+
+        .drip.green-transformation {
+            background: linear-gradient(to bottom, transparent, #00ff00, transparent);
         }
 
         .drip:nth-child(1) { left: 10%; animation-delay: 0s; height: 80px; }
@@ -607,11 +814,11 @@
                 font-size: 14px;
             }
 
-            .success-message {
+            .success-message, .completed-message {
                 top: 35%;
             }
 
-            .username {
+            .username, .username-second {
                 top: 50%;
             }
 
@@ -626,11 +833,11 @@
     </style>
 </head>
 <body>
-    <div class="blood-background"></div>
-    <div class="blood-waves"></div>
+    <div class="blood-background" id="bloodBackground"></div>
+    <div class="blood-waves" id="bloodWaves"></div>
     <div class="secret-text" id="secretText">718</div>
     <div class="particles-container" id="particlesContainer"></div>
-    <div class="blood-drips">
+    <div class="blood-drips" id="bloodDrips">
         <div class="drip"></div>
         <div class="drip"></div>
         <div class="drip"></div>
@@ -641,8 +848,8 @@
     <div class="flashlight" id="flashlight"></div>
     <div class="blur-overlay" id="blurOverlay"></div>
     
-    <div class="container">
-        <h1 class="title">
+    <div class="container" id="container">
+        <h1 class="title" id="title">
             ENTER THE PASSWORD
         </h1>
         <form class="search-form" id="searchForm">
@@ -660,8 +867,14 @@
         </form>
     </div>
 
+    <!-- Сообщения для первого пароля "primer" -->
     <div class="success-message" id="successMessage">SCREENSHOT</div>
     <div class="username" id="username">@shotmethen</div>
+
+    <!-- Сообщения для второго пароля "meet me" -->
+    <div class="completed-message" id="completedMessage">COMPLETED</div>
+    <div class="username-second" id="usernameSecond">@shotmethen</div>
+
     <button class="back-btn" id="backBtn">BACK</button>
 
     <script>
@@ -673,10 +886,17 @@
                 this.bloodEffect = document.getElementById('bloodEffect');
                 this.successMessage = document.getElementById('successMessage');
                 this.username = document.getElementById('username');
+                this.completedMessage = document.getElementById('completedMessage');
+                this.usernameSecond = document.getElementById('usernameSecond');
                 this.blurOverlay = document.getElementById('blurOverlay');
                 this.backBtn = document.getElementById('backBtn');
                 this.secretText = document.getElementById('secretText');
                 this.particlesContainer = document.getElementById('particlesContainer');
+                this.container = document.getElementById('container');
+                this.title = document.getElementById('title');
+                this.bloodBackground = document.getElementById('bloodBackground');
+                this.bloodWaves = document.getElementById('bloodWaves');
+                this.bloodDrips = document.getElementById('bloodDrips');
                 
                 this.mouseX = window.innerWidth / 2;
                 this.mouseY = window.innerHeight / 2;
@@ -739,6 +959,35 @@
                         symbol.parentNode.removeChild(symbol);
                     }
                 }, 3000);
+            }
+            
+            applyGreenTransformation() {
+                // Применяем зеленую трансформацию ко всем элементам
+                this.bloodBackground.classList.add('green-transformation');
+                this.bloodWaves.classList.add('green-transformation');
+                this.bloodDrips.classList.add('green-transformation');
+                this.flashlight.classList.add('green-transformation');
+                this.title.classList.add('green-transformation');
+                this.backBtn.classList.add('green-transformation');
+                this.secretText.classList.add('green-transformation');
+                
+                // Применяем к частицам
+                const particles = document.querySelectorAll('.particle');
+                particles.forEach(particle => {
+                    particle.classList.add('green-transformation');
+                });
+                
+                // Применяем к символам
+                const symbols = document.querySelectorAll('.floating-symbol');
+                symbols.forEach(symbol => {
+                    symbol.classList.add('green-transformation');
+                });
+                
+                // Применяем к каплям
+                const drips = document.querySelectorAll('.drip');
+                drips.forEach(drip => {
+                    drip.classList.add('green-transformation');
+                });
             }
             
             checkSecretText() {
@@ -820,21 +1069,12 @@
                 e.preventDefault();
                 if (this.isSuccess) return;
                 
-                const inputValue = this.searchInput.value.trim();
+                const inputValue = this.searchInput.value.trim().toLowerCase();
                 
-                if (inputValue.toLowerCase() === 'deer718') {
-                    this.isSuccess = true;
-                    this.bloodEffect.classList.add('active');
-                    
-                    setTimeout(() => {
-                        this.blurOverlay.classList.add('show');
-                        this.successMessage.classList.add('show');
-                        this.username.classList.add('show');
-                        this.backBtn.classList.add('show');
-                        this.searchInput.disabled = true;
-                        this.searchForm.style.pointerEvents = 'none';
-                    }, 800);
-                    
+                if (inputValue === 'dear718') {
+                    this.handleFirstPassword();
+                } else if (inputValue === 'meet me') {
+                    this.handleSecondPassword();
                 } else {
                     this.searchForm.classList.add('shake');
                     this.triggerFlicker();
@@ -846,16 +1086,81 @@
                 }
             }
             
+            handleFirstPassword() {
+                this.isSuccess = true;
+                this.bloodEffect.classList.add('active');
+                
+                setTimeout(() => {
+                    this.blurOverlay.classList.add('show');
+                    this.successMessage.classList.add('show');
+                    this.username.classList.add('show');
+                    this.backBtn.classList.add('show');
+                    this.searchInput.disabled = true;
+                    this.searchForm.style.pointerEvents = 'none';
+                }, 800);
+            }
+            
+            handleSecondPassword() {
+                this.isSuccess = true;
+                
+                // 1. Прячем форму ввода и весь текст
+                this.container.classList.add('hidden');
+                
+                // 2. Запускаем зеленую трансформацию
+                this.applyGreenTransformation();
+                
+                // 3. Через 3 секунды показываем "COMPLETED"
+                setTimeout(() => {
+                    this.completedMessage.classList.add('show');
+                    
+                    // 4. Через еще 2 секунды показываем "@shotmethen"
+                    setTimeout(() => {
+                        this.usernameSecond.classList.add('show');
+                        this.backBtn.classList.add('show');
+                    }, 2000);
+                    
+                }, 3000);
+            }
+            
             handleBack() {
                 this.isSuccess = false;
+                
+                // Сбрасываем все состояния
                 this.bloodEffect.classList.remove('active');
                 this.blurOverlay.classList.remove('show');
                 this.successMessage.classList.remove('show');
                 this.username.classList.remove('show');
+                this.completedMessage.classList.remove('show');
+                this.usernameSecond.classList.remove('show');
                 this.backBtn.classList.remove('show');
+                this.container.classList.remove('hidden');
                 this.searchInput.disabled = false;
                 this.searchForm.style.pointerEvents = 'auto';
                 this.searchInput.value = '';
+                
+                // Сбрасываем зеленую трансформацию
+                this.bloodBackground.classList.remove('green-transformation');
+                this.bloodWaves.classList.remove('green-transformation');
+                this.bloodDrips.classList.remove('green-transformation');
+                this.flashlight.classList.remove('green-transformation');
+                this.title.classList.remove('green-transformation');
+                this.backBtn.classList.remove('green-transformation');
+                this.secretText.classList.remove('green-transformation');
+                
+                const particles = document.querySelectorAll('.particle');
+                particles.forEach(particle => {
+                    particle.classList.remove('green-transformation');
+                });
+                
+                const symbols = document.querySelectorAll('.floating-symbol');
+                symbols.forEach(symbol => {
+                    symbol.classList.remove('green-transformation');
+                });
+                
+                const drips = document.querySelectorAll('.drip');
+                drips.forEach(drip => {
+                    drip.classList.remove('green-transformation');
+                });
             }
             
             handleInput() {
@@ -882,5 +1187,3 @@
     </script>
 </body>
 </html>
-
-
