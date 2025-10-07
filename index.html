@@ -14,23 +14,122 @@
 
         body {
             min-height: 100vh;
-            background: #0a0a0a;
+            background: #000000;
             font-family: 'MedievalSharp', cursive;
             overflow: hidden;
             position: relative;
             user-select: none;
         }
 
-        /* Анимированный градиент */
-        .animated-gradient {
+        /* Кровавый фон - атмосфера сосуда с кровью */
+        .blood-background {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, rgba(20, 0, 0, 0.3), #000000);
+            background: 
+                radial-gradient(circle at 50% 50%, 
+                    rgba(120, 0, 0, 0.4) 0%,
+                    rgba(80, 0, 0, 0.6) 30%,
+                    rgba(40, 0, 0, 0.8) 60%,
+                    rgba(20, 0, 0, 0.9) 100%
+                ),
+                radial-gradient(circle at 20% 20%, 
+                    rgba(139, 0, 0, 0.3) 0%,
+                    transparent 50%
+                ),
+                radial-gradient(circle at 80% 80%, 
+                    rgba(100, 0, 0, 0.3) 0%,
+                    transparent 50%
+                ),
+                radial-gradient(circle at 30% 70%, 
+                    rgba(120, 0, 0, 0.2) 0%,
+                    transparent 40%
+                );
             z-index: -4;
-            transition: background 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            animation: bloodPulse 30s ease-in-out infinite;
+        }
+
+        /* Эффект пульсации крови */
+        @keyframes bloodPulse {
+            0%, 100% {
+                opacity: 0.8;
+                transform: scale(1);
+                filter: hue-rotate(0deg) brightness(1);
+            }
+            25% {
+                opacity: 0.85;
+                transform: scale(1.005);
+                filter: hue-rotate(2deg) brightness(1.02);
+            }
+            50% {
+                opacity: 0.9;
+                transform: scale(1.01);
+                filter: hue-rotate(-1deg) brightness(1.01);
+            }
+            75% {
+                opacity: 0.85;
+                transform: scale(1.005);
+                filter: hue-rotate(1deg) brightness(1.02);
+            }
+        }
+
+        /* Дополнительные кровавые волны */
+        .blood-waves {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 10% 90%, 
+                    rgba(160, 0, 0, 0.15) 0%,
+                    transparent 40%
+                ),
+                radial-gradient(ellipse at 90% 10%, 
+                    rgba(140, 0, 0, 0.1) 0%,
+                    transparent 40%
+                );
+            z-index: -3;
+            animation: wavesMove 45s ease-in-out infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes wavesMove {
+            0%, 100% {
+                transform: translateX(0px) translateY(0px) rotate(0deg);
+            }
+            33% {
+                transform: translateX(-10px) translateY(5px) rotate(0.3deg);
+            }
+            66% {
+                transform: translateX(5px) translateY(-8px) rotate(-0.2deg);
+            }
+        }
+
+        /* Секретная надпись - полностью невидима по умолчанию */
+        .secret-text {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            color: transparent;
+            font-size: 14px;
+            font-family: 'MedievalSharp', cursive;
+            transition: all 0.5s ease;
+            z-index: 1;
+            pointer-events: none;
+            text-shadow: none;
+            opacity: 0;
+        }
+
+        .secret-text.visible {
+            color: rgba(255, 255, 255, 0.95);
+            opacity: 1;
+            text-shadow: 
+                0 0 10px rgba(255, 0, 0, 0.8),
+                0 0 30px rgba(255, 0, 0, 0.6),
+                0 0 50px rgba(255, 0, 0, 0.4);
         }
 
         /* Контейнер для частиц */
@@ -47,12 +146,11 @@
         .particle {
             position: absolute;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(139, 0, 0, 0.12), rgba(139, 0, 0, 0.04));
+            background: radial-gradient(circle, rgba(200, 0, 0, 0.15), rgba(139, 0, 0, 0.05));
             animation: float linear infinite;
             transform: translateY(100vh);
         }
 
-        /* Размеры частиц */
         .particle.small {
             width: 15px;
             height: 15px;
@@ -68,12 +166,12 @@
             height: 50px;
         }
 
-        /* Эритроциты */
         .particle.erythrocyte {
             width: 40px;
             height: 40px;
-            background: radial-gradient(circle, rgba(139, 0, 0, 0.15), transparent);
-            border: 2px solid rgba(139, 0, 0, 0.25);
+            background: radial-gradient(circle, rgba(200, 0, 0, 0.2), transparent);
+            border: 1px solid rgba(180, 0, 0, 0.3);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
         }
 
         @keyframes float {
@@ -81,11 +179,11 @@
                 transform: translateY(100vh) rotate(0deg);
                 opacity: 0;
             }
-            5% {
-                opacity: 0.25;
+            2% {
+                opacity: 0.3;
             }
-            95% {
-                opacity: 0.25;
+            98% {
+                opacity: 0.3;
             }
             100% {
                 transform: translateY(-100px) rotate(360deg);
@@ -97,12 +195,13 @@
         .floating-symbol {
             position: fixed;
             font-family: 'MedievalSharp', cursive;
-            font-size: 24px;
-            color: rgba(139, 0, 0, 0.7);
+            font-size: 48px;
+            color: rgba(255, 50, 50, 0.7);
             pointer-events: none;
             z-index: -1;
             opacity: 0;
             animation: symbolAppear 3s ease-in-out forwards;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
         }
 
         @keyframes symbolAppear {
@@ -111,20 +210,18 @@
                 transform: scale(0.8) translateY(10px);
                 filter: blur(5px);
             }
-            20% {
+            15% {
                 opacity: 1;
                 transform: scale(1) translateY(0);
                 filter: blur(0);
-                animation-timing-function: ease-out;
             }
-            30%, 50%, 70% {
-                animation-timing-function: ease-in-out;
+            25%, 45%, 65% {
                 transform: translateX(-2px);
             }
-            40%, 60% {
+            35%, 55% {
                 transform: translateX(2px);
             }
-            80% {
+            75% {
                 transform: translateX(0);
             }
             100% {
@@ -134,44 +231,16 @@
             }
         }
 
-        /* Туманный фон */
-        .fog {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 50%, rgba(80, 0, 0, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(100, 0, 0, 0.2) 0%, transparent 50%),
-                radial-gradient(circle at 40% 80%, rgba(60, 0, 0, 0.25) 0%, transparent 50%);
-            z-index: -3;
-            animation: fogMove 30s ease-in-out infinite;
-            opacity: 0.6;
-        }
-
-        @keyframes fogMove {
-            0%, 100% {
-                transform: translateX(0) translateY(0);
-            }
-            33% {
-                transform: translateX(-10px) translateY(5px);
-            }
-            66% {
-                transform: translateX(5px) translateY(-8px);
-            }
-        }
-
         /* Эффект фонарика */
         .flashlight {
             position: fixed;
-            width: 120px;
-            height: 120px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             background: radial-gradient(
                 circle,
-                rgba(139, 0, 0, 0.3) 0%,
-                rgba(139, 0, 0, 0.1) 20%,
+                rgba(255, 50, 50, 0.4) 0%,
+                rgba(200, 0, 0, 0.2) 20%,
                 transparent 60%
             );
             pointer-events: none;
@@ -179,17 +248,17 @@
             transform: translate(-50%, -50%);
             transition: transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             filter: brightness(1);
-            will-change: transform;
-            box-shadow: 0 0 50px rgba(139, 0, 0, 0.4);
+            box-shadow: 
+                0 0 50px rgba(255, 0, 0, 0.5),
+                0 0 100px rgba(139, 0, 0, 0.3);
         }
 
-        /* Эффект замыкания */
         .flashlight.flicker {
             animation: flicker 0.3s ease-in-out;
         }
 
         @keyframes flicker {
-            0% {
+            0%, 100% {
                 filter: brightness(1);
                 opacity: 1;
             }
@@ -198,16 +267,12 @@
                 opacity: 0.7;
             }
             50% {
-                filter: brightness(1.5);
+                filter: brightness(1.8);
                 opacity: 1;
             }
             75% {
                 filter: brightness(0.4);
                 opacity: 0.8;
-            }
-            100% {
-                filter: brightness(1);
-                opacity: 1;
             }
         }
 
@@ -230,41 +295,63 @@
             position: relative;
         }
 
-        /* Поле ввода */
-        .search-input {
+        .input-container {
+            position: relative;
             flex: 1;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .search-input {
+            width: 100%;
             height: 55px;
             padding: 0 25px;
-            background: rgba(0, 0, 0, 0.8);
-            border: 2px solid rgba(139, 0, 0, 0.6);
+            background: rgba(20, 0, 0, 0.9);
+            border: 2px solid rgba(200, 0, 0, 0.7);
             border-radius: 8px;
-            color: #8b0000;
+            color: #ff4444;
             font-size: 18px;
             font-family: 'MedievalSharp', cursive;
-            font-weight: 400;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(8px);
             transition: all 0.3s ease;
             letter-spacing: 1px;
-            min-width: 0;
-            text-shadow: 0 0 3px rgba(255, 0, 0, 0.4);
+            text-shadow: 0 0 5px rgba(255, 0, 0, 0.6);
             position: relative;
-            overflow: hidden;
+            z-index: 2;
         }
 
         .search-input:focus {
             outline: none;
-            border-color: rgba(255, 0, 0, 0.8);
-            background: rgba(0, 0, 0, 0.9);
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+            border-color: rgba(255, 50, 50, 0.9);
+            background: rgba(30, 0, 0, 0.95);
+            box-shadow: 
+                0 0 25px rgba(255, 0, 0, 0.6),
+                0 0 50px rgba(139, 0, 0, 0.3);
         }
 
         .search-input::placeholder {
-            color: rgba(139, 0, 0, 0.5);
-            font-family: 'MedievalSharp', cursive;
-            letter-spacing: 0.5px;
+            color: rgba(255, 100, 100, 0.6);
         }
 
-        /* Shake эффект при неправильном вводе */
+        .blood-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 0;
+            background: linear-gradient(to bottom, #8b0000, #600000);
+            border-radius: 8px;
+            opacity: 0;
+            transition: all 1.5s ease;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .blood-effect.active {
+            height: 100%;
+            opacity: 0.8;
+        }
+
         .shake {
             animation: shake 0.5s ease-in-out;
         }
@@ -281,79 +368,71 @@
             }
         }
 
-        /* Эффект стекающей крови при правильном вводе */
-        .blood-effect {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 0;
-            background: linear-gradient(to bottom, #8b0000, transparent);
-            border-radius: 8px;
-            opacity: 0;
-            transition: all 2s ease;
-            pointer-events: none;
-        }
-
-        .blood-effect.active {
-            height: 100%;
-            opacity: 0.7;
-            animation: bloodDrip 3s ease-in-out;
-        }
-
-        @keyframes bloodDrip {
-            0% {
-                height: 0;
-                opacity: 0;
-            }
-            50% {
-                height: 100%;
-                opacity: 0.7;
-            }
-            100% {
-                height: 100%;
-                opacity: 0.7;
-            }
-        }
-
-        /* Кнопка */
         .submit-btn {
             height: 55px;
             padding: 0 30px;
-            background: linear-gradient(135deg, rgba(139, 0, 0, 0.6), rgba(100, 0, 0, 0.8));
-            border: 2px solid rgba(255, 0, 0, 0.5);
+            background: linear-gradient(135deg, rgba(160, 0, 0, 0.7), rgba(120, 0, 0, 0.9));
+            border: 2px solid rgba(255, 50, 50, 0.6);
             border-radius: 8px;
-            color: #8b0000;
+            color: #ff4444;
             font-size: 16px;
             font-family: 'MedievalSharp', cursive;
-            font-weight: 400;
             cursor: pointer;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(8px);
             transition: all 0.3s ease;
             letter-spacing: 1px;
             text-transform: uppercase;
             white-space: nowrap;
             flex-shrink: 0;
-            position: relative;
-            line-height: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+            text-shadow: 0 0 8px rgba(255, 0, 0, 0.7);
         }
 
         .submit-btn:hover {
-            background: linear-gradient(135deg, rgba(178, 34, 34, 0.7), rgba(139, 0, 0, 0.8));
-            border-color: rgba(255, 69, 0, 0.6);
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+            background: linear-gradient(135deg, rgba(180, 0, 0, 0.8), rgba(140, 0, 0, 0.9));
+            border-color: rgba(255, 80, 80, 0.8);
+            box-shadow: 
+                0 0 20px rgba(255, 0, 0, 0.6),
+                0 0 40px rgba(139, 0, 0, 0.3);
             transform: translateY(-1px);
         }
 
-        .submit-btn:active {
-            transform: translateY(0);
+        /* Кнопка BACK */
+        .back-btn {
+            position: fixed;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 12px 30px;
+            background: linear-gradient(135deg, rgba(160, 0, 0, 0.6), rgba(120, 0, 0, 0.8));
+            border: 2px solid rgba(255, 50, 50, 0.5);
+            border-radius: 8px;
+            color: #ff4444;
+            font-size: 16px;
+            font-family: 'MedievalSharp', cursive;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 1001;
         }
 
-        /* Сообщение об успехе */
+        .back-btn.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .back-btn:hover {
+            background: linear-gradient(135deg, rgba(180, 0, 0, 0.7), rgba(140, 0, 0, 0.8));
+            border-color: rgba(255, 80, 80, 0.7);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+        }
+
         .success-message {
             position: fixed;
             top: 40%;
@@ -361,57 +440,55 @@
             transform: translate(-50%, -50%);
             font-size: clamp(28px, 6vw, 48px);
             font-family: 'MedievalSharp', cursive;
-            font-weight: 400;
-            color: #660000;
+            color: #ff4444;
             text-align: center;
             text-shadow: 
-                0 0 10px rgba(255, 0, 0, 0.3),
-                0 0 20px rgba(139, 0, 0, 0.2);
+                0 0 15px rgba(255, 0, 0, 0.8),
+                0 0 30px rgba(200, 0, 0, 0.6),
+                0 0 50px rgba(139, 0, 0, 0.4);
             z-index: 1000;
             opacity: 0;
             transition: opacity 1s ease;
             letter-spacing: 2px;
             pointer-events: none;
             padding: 20px;
-            user-select: none;
         }
 
         .success-message.show {
             opacity: 1;
-            animation: bloodPulse 4s ease-in-out infinite;
+            animation: bloodPulseMessage 4s ease-in-out infinite;
         }
 
-        @keyframes bloodPulse {
+        @keyframes bloodPulseMessage {
             0%, 100% {
                 transform: translate(-50%, -50%) scale(1);
                 text-shadow: 
-                    0 0 10px rgba(255, 0, 0, 0.3),
-                    0 0 20px rgba(139, 0, 0, 0.2);
+                    0 0 15px rgba(255, 0, 0, 0.8),
+                    0 0 30px rgba(200, 0, 0, 0.6);
             }
             50% {
                 transform: translate(-50%, -50%) scale(1.05);
                 text-shadow: 
-                    0 0 15px rgba(255, 0, 0, 0.4),
-                    0 0 30px rgba(139, 0, 0, 0.3);
+                    0 0 25px rgba(255, 0, 0, 0.9),
+                    0 0 45px rgba(200, 0, 0, 0.7),
+                    0 0 65px rgba(139, 0, 0, 0.5);
             }
         }
 
-        /* Нижняя надпись с замыканиями */
         .username {
             position: fixed;
-            top: 55%;
+            top: 52%;
             left: 50%;
             transform: translate(-50%, -50%);
             font-size: clamp(16px, 3vw, 20px);
             font-family: 'MedievalSharp', cursive;
-            color: #660000;
+            color: #ff4444;
             text-align: center;
-            text-shadow: 0 0 5px rgba(255, 0, 0, 0.2);
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
             z-index: 1000;
             opacity: 0;
             transition: opacity 0.5s ease;
             pointer-events: none;
-            user-select: none;
         }
 
         .username.show {
@@ -422,27 +499,26 @@
         @keyframes usernameFlicker {
             0%, 100% {
                 opacity: 1;
-                text-shadow: 0 0 5px rgba(255, 0, 0, 0.2);
+                text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
             }
             2%, 6%, 10% {
                 opacity: 0.4;
-                text-shadow: 0 0 2px rgba(255, 0, 0, 0.1);
+                text-shadow: 0 0 5px rgba(255, 0, 0, 0.2);
             }
             4%, 8% {
                 opacity: 0.8;
-                text-shadow: 0 0 8px rgba(255, 0, 0, 0.3);
+                text-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
             }
         }
 
-        /* Эффект размытия при успехе */
         .blur-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            backdrop-filter: blur(20px);
-            z-index: 999;
+            backdrop-filter: blur(25px);
+            z-index: 998;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.5s ease;
@@ -450,28 +526,23 @@
 
         .blur-overlay.show {
             opacity: 1;
+            pointer-events: all;
         }
 
-        /* Заголовок */
         .title {
             text-align: center;
-            color: #8b0000;
+            color: #ff4444;
             margin-bottom: 35px;
             font-size: clamp(22px, 5vw, 30px);
             font-family: 'MedievalSharp', cursive;
-            font-weight: 400;
             text-shadow: 
-                0 0 8px rgba(139, 0, 0, 0.6),
-                0 0 15px rgba(255, 0, 0, 0.4);
+                0 0 10px rgba(255, 0, 0, 0.8),
+                0 0 20px rgba(200, 0, 0, 0.6),
+                0 0 30px rgba(139, 0, 0, 0.4);
             letter-spacing: 2px;
             line-height: 1.3;
-            user-select: none;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
         }
 
-        /* Кровавые подтёки на странице */
         .blood-drips {
             position: fixed;
             top: 0;
@@ -480,22 +551,23 @@
             height: 100%;
             pointer-events: none;
             z-index: -2;
-            opacity: 0.2;
+            opacity: 0.3;
         }
 
         .drip {
             position: absolute;
-            width: 3px;
-            background: linear-gradient(to bottom, transparent, #8b0000, transparent);
-            animation: dripFall 10s linear infinite;
+            width: 2px;
+            background: linear-gradient(to bottom, transparent, #ff4444, transparent);
+            animation: dripFall 6s linear infinite;
+            top: -100px;
         }
 
         .drip:nth-child(1) { left: 10%; animation-delay: 0s; height: 80px; }
-        .drip:nth-child(2) { left: 25%; animation-delay: 2s; height: 120px; }
-        .drip:nth-child(3) { left: 40%; animation-delay: 4s; height: 60px; }
-        .drip:nth-child(4) { left: 60%; animation-delay: 1s; height: 100px; }
-        .drip:nth-child(5) { left: 75%; animation-delay: 3s; height: 70px; }
-        .drip:nth-child(6) { left: 90%; animation-delay: 5s; height: 90px; }
+        .drip:nth-child(2) { left: 25%; animation-delay: 1s; height: 120px; }
+        .drip:nth-child(3) { left: 40%; animation-delay: 2s; height: 60px; }
+        .drip:nth-child(4) { left: 60%; animation-delay: 0.5s; height: 100px; }
+        .drip:nth-child(5) { left: 75%; animation-delay: 1.5s; height: 70px; }
+        .drip:nth-child(6) { left: 90%; animation-delay: 2.5s; height: 90px; }
 
         @keyframes dripFall {
             0% {
@@ -514,24 +586,25 @@
             }
         }
 
-        /* Медиа-запросы */
         @media (max-width: 768px) {
             .search-form {
                 flex-direction: column;
                 gap: 12px;
             }
             
-            .search-input {
+            .input-container {
                 width: 100%;
+            }
+            
+            .search-input {
                 height: 50px;
                 font-size: 16px;
             }
             
-            .submit-btn {
+            .submit-btn, .back-btn {
                 width: 100%;
                 height: 50px;
                 font-size: 14px;
-                padding: 0 20px;
             }
 
             .success-message {
@@ -539,14 +612,23 @@
             }
 
             .username {
-                top: 60%;
+                top: 50%;
+            }
+
+            .back-btn {
+                top: 65%;
+            }
+
+            .floating-symbol {
+                font-size: 36px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="animated-gradient" id="animatedGradient"></div>
-    <div class="fog"></div>
+    <div class="blood-background"></div>
+    <div class="blood-waves"></div>
+    <div class="secret-text" id="secretText">SECRET</div>
     <div class="particles-container" id="particlesContainer"></div>
     <div class="blood-drips">
         <div class="drip"></div>
@@ -564,7 +646,7 @@
             ENTER THE PASSWORD
         </h1>
         <form class="search-form" id="searchForm">
-            <div style="position: relative; flex: 1;">
+            <div class="input-container">
                 <input 
                     type="text" 
                     class="search-input" 
@@ -580,6 +662,7 @@
 
     <div class="success-message" id="successMessage">WELCOME</div>
     <div class="username" id="username">@AliceNotMech</div>
+    <button class="back-btn" id="backBtn">BACK</button>
 
     <script>
         class HorrorApp {
@@ -591,7 +674,8 @@
                 this.successMessage = document.getElementById('successMessage');
                 this.username = document.getElementById('username');
                 this.blurOverlay = document.getElementById('blurOverlay');
-                this.animatedGradient = document.getElementById('animatedGradient');
+                this.backBtn = document.getElementById('backBtn');
+                this.secretText = document.getElementById('secretText');
                 this.particlesContainer = document.getElementById('particlesContainer');
                 
                 this.mouseX = window.innerWidth / 2;
@@ -601,9 +685,9 @@
                 this.animationId = null;
                 this.flickerInterval = null;
                 this.symbolInterval = null;
-                this.baseGradientAngle = 135;
+                this.isSuccess = false;
                 
-                this.symbols = ['?', '#', '!', '@'];
+                this.symbols = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ?#!@';
                 
                 this.init();
             }
@@ -617,23 +701,16 @@
             }
             
             createParticles() {
-                const particleCount = 20;
-                
+                const particleCount = 15;
                 for (let i = 0; i < particleCount; i++) {
                     const particle = document.createElement('div');
-                    particle.classList.add('particle');
-                    
                     const types = ['small', 'medium', 'large', 'erythrocyte'];
                     const type = types[Math.floor(Math.random() * types.length)];
-                    particle.classList.add(type);
+                    particle.classList.add('particle', type);
                     
-                    const left = Math.random() * 100;
-                    const duration = 15 + Math.random() * 20;
-                    const delay = Math.random() * 5;
-                    
-                    particle.style.left = left + '%';
-                    particle.style.animationDuration = duration + 's';
-                    particle.style.animationDelay = delay + 's';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.animationDuration = (15 + Math.random() * 20) + 's';
+                    particle.style.animationDelay = (Math.random() * 5) + 's';
                     
                     this.particlesContainer.appendChild(particle);
                 }
@@ -641,8 +718,10 @@
             
             startSymbols() {
                 this.symbolInterval = setInterval(() => {
-                    this.createFloatingSymbol();
-                }, 2000 + Math.random() * 1000); // 2-3 секунды
+                    if (!this.isSuccess) {
+                        this.createFloatingSymbol();
+                    }
+                }, 2000 + Math.random() * 1000);
             }
             
             createFloatingSymbol() {
@@ -650,16 +729,11 @@
                 symbol.classList.add('floating-symbol');
                 symbol.textContent = this.symbols[Math.floor(Math.random() * this.symbols.length)];
                 
-                // Случайная позиция на экране
-                const left = 10 + Math.random() * 80;
-                const top = 10 + Math.random() * 80;
-                
-                symbol.style.left = left + '%';
-                symbol.style.top = top + '%';
+                symbol.style.left = (5 + Math.random() * 90) + '%';
+                symbol.style.top = (5 + Math.random() * 90) + '%';
                 
                 document.body.appendChild(symbol);
                 
-                // Удаляем символ после анимации
                 setTimeout(() => {
                     if (symbol.parentNode) {
                         symbol.parentNode.removeChild(symbol);
@@ -667,51 +741,41 @@
                 }, 3000);
             }
             
-            updateGradient() {
-                const centerX = window.innerWidth / 2;
-                const centerY = window.innerHeight / 2;
+            checkSecretText() {
+                const secretRect = this.secretText.getBoundingClientRect();
+                const flashlightRect = {
+                    left: this.flashlightX - 40,
+                    top: this.flashlightY - 40,
+                    right: this.flashlightX + 40,
+                    bottom: this.flashlightY + 40
+                };
                 
-                const deltaX = (this.mouseX - centerX) / centerX;
-                const deltaY = (this.mouseY - centerY) / centerY;
+                const isOverlapping = 
+                    flashlightRect.right > secretRect.left &&
+                    flashlightRect.left < secretRect.right &&
+                    flashlightRect.bottom > secretRect.top &&
+                    flashlightRect.top < secretRect.bottom;
                 
-                const angleOffsetX = deltaX * 15;
-                const angleOffsetY = deltaY * 15;
-                
-                const newAngle = this.baseGradientAngle + angleOffsetX + angleOffsetY;
-                
-                this.animatedGradient.style.background = 
-                    `linear-gradient(${newAngle}deg, rgba(20, 0, 0, 0.3), #000000)`;
+                if (isOverlapping) {
+                    this.secretText.classList.add('visible');
+                } else {
+                    this.secretText.classList.remove('visible');
+                }
             }
             
             setupEventListeners() {
-                let rafId;
-                const throttledUpdate = () => {
-                    if (rafId) return;
-                    rafId = requestAnimationFrame(() => {
-                        this.updateGradient();
-                        rafId = null;
-                    });
-                };
-
                 document.addEventListener('mousemove', (e) => {
                     this.mouseX = e.clientX;
                     this.mouseY = e.clientY;
-                    throttledUpdate();
+                    this.checkSecretText();
                 });
-                
-                document.addEventListener('touchmove', (e) => {
-                    e.preventDefault();
-                    const touch = e.touches[0];
-                    this.mouseX = touch.clientX;
-                    this.mouseY = touch.clientY;
-                    throttledUpdate();
-                }, { passive: false });
                 
                 this.searchForm.addEventListener('submit', (e) => this.handleSubmit(e));
                 this.searchInput.addEventListener('input', () => this.handleInput());
+                this.backBtn.addEventListener('click', () => this.handleBack());
                 
-                this.searchForm.addEventListener('mouseenter', () => this.resizeFlashlight(140));
-                this.searchForm.addEventListener('mouseleave', () => this.resizeFlashlight(120));
+                this.searchForm.addEventListener('mouseenter', () => this.resizeFlashlight(100));
+                this.searchForm.addEventListener('mouseleave', () => this.resizeFlashlight(80));
             }
             
             startAnimation() {
@@ -732,15 +796,17 @@
             
             startFlicker() {
                 this.flickerInterval = setInterval(() => {
-                    if (Math.random() < 0.3) {
+                    if (Math.random() < 0.3 && !this.isSuccess) {
                         this.triggerFlicker();
                     }
                 }, 3000 + Math.random() * 4000);
             }
             
             resizeFlashlight(size) {
-                this.flashlight.style.width = size + 'px';
-                this.flashlight.style.height = size + 'px';
+                if (!this.isSuccess) {
+                    this.flashlight.style.width = size + 'px';
+                    this.flashlight.style.height = size + 'px';
+                }
             }
             
             triggerFlicker() {
@@ -752,16 +818,21 @@
             
             handleSubmit(e) {
                 e.preventDefault();
+                if (this.isSuccess) return;
                 
                 const inputValue = this.searchInput.value.trim();
                 
                 if (inputValue.toLowerCase() === 'primer') {
+                    this.isSuccess = true;
                     this.bloodEffect.classList.add('active');
                     
                     setTimeout(() => {
                         this.blurOverlay.classList.add('show');
                         this.successMessage.classList.add('show');
                         this.username.classList.add('show');
+                        this.backBtn.classList.add('show');
+                        this.searchInput.disabled = true;
+                        this.searchForm.style.pointerEvents = 'none';
                     }, 800);
                     
                 } else {
@@ -775,23 +846,28 @@
                 }
             }
             
-            handleInput() {
+            handleBack() {
+                this.isSuccess = false;
                 this.bloodEffect.classList.remove('active');
                 this.blurOverlay.classList.remove('show');
                 this.successMessage.classList.remove('show');
                 this.username.classList.remove('show');
+                this.backBtn.classList.remove('show');
+                this.searchInput.disabled = false;
+                this.searchForm.style.pointerEvents = 'auto';
+                this.searchInput.value = '';
+            }
+            
+            handleInput() {
+                if (!this.isSuccess) {
+                    this.bloodEffect.classList.remove('active');
+                }
             }
 
             destroy() {
-                if (this.animationId) {
-                    cancelAnimationFrame(this.animationId);
-                }
-                if (this.flickerInterval) {
-                    clearInterval(this.flickerInterval);
-                }
-                if (this.symbolInterval) {
-                    clearInterval(this.symbolInterval);
-                }
+                if (this.animationId) cancelAnimationFrame(this.animationId);
+                if (this.flickerInterval) clearInterval(this.flickerInterval);
+                if (this.symbolInterval) clearInterval(this.symbolInterval);
             }
         }
         
@@ -801,9 +877,7 @@
         });
 
         window.addEventListener('beforeunload', () => {
-            if (app) {
-                app.destroy();
-            }
+            if (app) app.destroy();
         });
     </script>
 </body>
